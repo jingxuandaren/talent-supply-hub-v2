@@ -2,9 +2,15 @@ name: Sync from talent-supply-hub-public
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "*/10 * * * *"
 
 permissions:
   contents: write
+
+concurrency:
+  group: sync-from-public
+  cancel-in-progress: true
 
 jobs:
   sync-main:
