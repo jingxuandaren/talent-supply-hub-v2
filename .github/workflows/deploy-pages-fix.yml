@@ -15,14 +15,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: pnpm
-      - run: corepack enable && corepack prepare pnpm@9 --activate
       - env:
           npm_config_registry: https://bnpm.byted.org/
-        run: pnpm install --frozen-lockfile
+        run: corepack pnpm install --frozen-lockfile
       - env:
           npm_config_registry: https://bnpm.byted.org/
-        run: pnpm run build:github-pages
+        run: corepack pnpm run build:github-pages
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -38,8 +36,6 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
-
-
 
 
 
