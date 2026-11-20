@@ -76,8 +76,8 @@ jobs:
           target_repo_name=$(echo "$GITHUB_REPOSITORY" | cut -d/ -f2)
           file=static/js/625.d0175ad892.js
           test -f "$file"
-          python3 -c "from pathlib import Path; p = Path(\"$file\"); t = p.read_text(); u = t.replace(\"basename:\\\"/\\\"\", \"basename:\\\"/\" + \"$target_repo_name\" + \"\\\"\", 1); assert u != t, \"No router basename patch applied\"; p.write_text(u)"
-          echo "Patched $file for /$target_repo_name"
+          python3 -c "from pathlib import Path; p = Path(\"$file\"); t = p.read_text(); repo = \"/\" + \"$target_repo_name\"; u = t.replace(\"supportHtml5History:!1,basename:\\\"/\" + \"$target_repo_name\" + \"\\\"\", \"supportHtml5History:!0,basename:\\\"/\" + \"$target_repo_name\" + \"\\\"\", 1).replace(\"{serverBase:[\\\"/\\\"]},(J||{}).router\", \"{serverBase:[\\\"/\\\"],basename:\\\"\" + repo + \"\\\"},(J||{}).router\", 1); assert u != t, \"No github pages router patch applied\"; p.write_text(u)"
+          echo "Patched $file router config for /$target_repo_name"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
