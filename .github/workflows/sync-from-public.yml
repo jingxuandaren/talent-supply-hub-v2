@@ -1,0 +1,40 @@
+name: Sync from talent-supply-hub-public
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sync source repo
+        run: |
+          set -euxo pipefail
+          tmpdir="$(mktemp -d)"
+          git clone --depth=1 https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source"
+          mkdir -p .github/workflows
+          rsync -a --delete \
+            --exclude ".git" \
+            --exclude ".github/workflows/sync-from-public.yml" \
+            "$tmpdir/source/" ./
+
+      - name: Commit and push
+        run: |
+          set -euxo pipefail
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "No changes to sync"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: sync from talent-supply-hub-public"
+          git push origin HEAD:main
