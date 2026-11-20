@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-      - run: corepack enable
+      - run: corepack enable && corepack prepare pnpm@9 --activate
       - env:
           npm_config_registry: https://bnpm.byted.org/
         run: pnpm install --frozen-lockfile
