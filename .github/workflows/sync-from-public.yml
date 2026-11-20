@@ -7,7 +7,7 @@ permissions:
   contents: write
 
 jobs:
-  sync:
+  sync-main:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout target repo
@@ -15,7 +15,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Sync source repo
+      - name: Sync source main branch
         run: |
           set -euxo pipefail
           tmpdir="$(mktemp -d)"
@@ -26,11 +26,11 @@ jobs:
             --exclude ".github/workflows/sync-from-public.yml" \
             "$tmpdir/source/" ./
 
-      - name: Commit and push
+      - name: Commit and push main
         run: |
           set -euxo pipefail
           if git diff --quiet && git diff --cached --quiet; then
-            echo "No changes to sync"
+            echo "No changes to sync on main"
             exit 0
           fi
           git config user.name "github-actions[bot]"
@@ -38,3 +38,41 @@ jobs:
           git add -A
           git commit -m "chore: sync from talent-supply-hub-public"
           git push origin HEAD:main
+
+  sync-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Mirror source gh-pages branch
+        run: |
+          set -euxo pipefail
+          tmpdir="$(mktemp -d)"
+          git clone --depth=1 --branch gh-pages https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source"
+          if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
+            git fetch origin gh-pages:gh-pages
+            git worktree add "$tmpdir/target" gh-pages
+          else
+            git worktree add --detach "$tmpdir/target"
+            cd "$tmpdir/target"
+            git switch --orphan gh-pages
+            cd - >/dev/null
+          fi
+          cd "$tmpdir/target"
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          rsync -a --delete \
+            --exclude ".git" \
+            "$tmpdir/source/" ./
+          touch .nojekyll
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to sync on gh-pages"
+            exit 0
+          fi
+          git commit -m "chore: sync gh-pages from talent-supply-hub-public"
+          git push origin gh-pages
