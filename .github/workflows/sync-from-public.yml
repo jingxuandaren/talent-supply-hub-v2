@@ -57,6 +57,10 @@ jobs:
         run: |
           set -euxo pipefail
           tmpdir="$(mktemp -d)"
+          mkdir -p "$tmpdir/cache/avatars"
+          if [ -f .github/cached-avatars/douyin-hd-6870163473385390093-725169213832.jpg.b64/douyin-hd-6870163473385390093-725169213832.jpg.b64 ]; then
+            base64 -d .github/cached-avatars/douyin-hd-6870163473385390093-725169213832.jpg.b64/douyin-hd-6870163473385390093-725169213832.jpg.b64 > "$tmpdir/cache/avatars/douyin-hd-6870163473385390093-725169213832.jpg"
+          fi
           git clone --depth=1 --branch gh-pages https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source"
           git clone --depth=1 --branch main https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source-main"
           if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
