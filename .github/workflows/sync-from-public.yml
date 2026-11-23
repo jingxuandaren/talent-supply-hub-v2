@@ -73,8 +73,8 @@ jobs:
             cd - >/dev/null
           fi
           mkdir -p "$tmpdir/cache/avatars"
-          if [ -d avatars ]; then cp -a avatars/. "$tmpdir/cache/avatars/"; fi
           cd "$tmpdir/target"
+          if [ -d avatars ]; then cp -a avatars/. "$tmpdir/cache/avatars/"; fi
           find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
           rsync -a --delete \
             --exclude ".git" \
