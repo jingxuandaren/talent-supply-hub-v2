@@ -25,7 +25,6 @@ const TEAMS: TeamSpec[] = [
     docUrl: 'https://bytedance.larkoffice.com/wiki/IfzPwJ97UimaNkklxrlcxpxUn7d',
     coverImage: lifeDramaTeamHero,
     coverAlt: '2026巨量星图「人生百态剧情团」蓝色舞台主题封面',
-    coverFit: 'contain',
     docSummary: {
       subtitle: '已发布资料：项目总览',
       bullets: [
