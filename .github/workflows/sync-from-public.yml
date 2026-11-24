@@ -24,7 +24,7 @@ jobs:
         run: |
           set -euo pipefail
           tmpdir="$(mktemp -d)"
-          echo "031941a1750041004cd71c18424095717597adc138ff19e42f5b18ac228e4ae3  release-content-20261124.zip" | sha256sum --check
+          echo "6a6a9b7f79d8082f4394963730c7e5a65ca1e74b42ffb088d781237e91cdff6d  release-content-20261124.zip" | sha256sum --check
           unzip -q release-content-20261124.zip -d "$tmpdir/release"
           git clone --depth=1 https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source"
           rsync -a --delete --exclude ".git" --exclude ".github/workflows/sync-from-public.yml" --exclude "release-content-20261124.zip" "$tmpdir/source/" ./
@@ -49,7 +49,7 @@ jobs:
         run: |
           set -euo pipefail
           tmpdir="$(mktemp -d)"
-          echo "031941a1750041004cd71c18424095717597adc138ff19e42f5b18ac228e4ae3  release-content-20261124.zip" | sha256sum --check
+          echo "6a6a9b7f79d8082f4394963730c7e5a65ca1e74b42ffb088d781237e91cdff6d  release-content-20261124.zip" | sha256sum --check
           unzip -q release-content-20261124.zip -d "$tmpdir/release"
           git clone --depth=1 --branch gh-pages https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source"
           git clone --depth=1 https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source-main"
