@@ -20,11 +20,30 @@ import q4Image4 from '../assets/cmsLHnGlZkFuKWeFNgwRDAUiLqaAUPWIrLmtlvTT.png';
 import q4Image2 from '../assets/fIhHpwuYeMgWphuTatktEfEsBjkuKbnBHzrJnprO.png';
 import q4Image3 from '../assets/iLQXCkAlgyFnzmlaVgaPjBxFWqIRadlKJoDLmfBC.png';
 import doubleHolidayPoster1 from '../assets/ip-double-holiday-poster-1.png';
+import doubleHolidayPreview1 from '../assets/ip-double-holiday-poster-1.webp';
 import doubleHolidayPoster2 from '../assets/ip-double-holiday-poster-2.png';
+import doubleHolidayPreview2 from '../assets/ip-double-holiday-poster-2.webp';
+import winterPoster1 from '../assets/ip-winter-beauty-1.png';
+import winterPreview1 from '../assets/ip-winter-beauty-1.webp';
+import winterPoster2 from '../assets/ip-winter-beauty-2.png';
+import winterPreview2 from '../assets/ip-winter-beauty-2.webp';
+import winterPoster3 from '../assets/ip-winter-beauty-3.png';
+import winterPreview3 from '../assets/ip-winter-beauty-3.webp';
+import winterPoster4 from '../assets/ip-winter-beauty-4.png';
+import winterPreview4 from '../assets/ip-winter-beauty-4.webp';
+import winterPoster5 from '../assets/ip-winter-beauty-5.png';
+import winterPreview5 from '../assets/ip-winter-beauty-5.webp';
 import q4Image1 from '../assets/kNYShsdOiBKkobykZECUHhOvZKZThNbwbdQMtzRT.png';
 
 const CAMPAIGN_IMAGES: Record<string, string[]> = {
   '00': [doubleHolidayPoster1, doubleHolidayPoster2],
+  '07': [
+    winterPoster1,
+    winterPoster2,
+    winterPoster3,
+    winterPoster4,
+    winterPoster5,
+  ],
   '02': [
     gameImage1,
     gameImage2,
@@ -36,6 +55,30 @@ const CAMPAIGN_IMAGES: Record<string, string[]> = {
   '03': [homeImage],
   '04': [q4Image1, q4Image2, q4Image3, q4Image4],
   '06': [voyageAnswer],
+};
+
+const CAMPAIGN_PREVIEWS: Record<string, string[]> = {
+  '00': [doubleHolidayPreview1, doubleHolidayPreview2],
+  '07': [
+    winterPreview1,
+    winterPreview2,
+    winterPreview3,
+    winterPreview4,
+    winterPreview5,
+  ],
+};
+const CAMPAIGN_IMAGE_SIZES: Record<string, [number, number][]> = {
+  '00': [
+    [3594, 1964],
+    [1992, 1598],
+  ],
+  '07': [
+    [957, 1280],
+    [957, 1280],
+    [1280, 720],
+    [957, 1280],
+    [1280, 720],
+  ],
 };
 
 function CampaignGallery({ campaign }: { campaign: IpCampaign }) {
@@ -56,7 +99,11 @@ function CampaignGallery({ campaign }: { campaign: IpCampaign }) {
           aria-label={`查看${campaign.industry}合作企划第${index + 1}张原图`}
         >
           <img
-            src={image}
+            src={CAMPAIGN_PREVIEWS[campaign.index]?.[index] ?? image}
+            width={CAMPAIGN_IMAGE_SIZES[campaign.index]?.[index]?.[0]}
+            height={CAMPAIGN_IMAGE_SIZES[campaign.index]?.[index]?.[1]}
+            loading="lazy"
+            decoding="async"
             alt={`${campaign.industry}合作企划展示图 ${index + 1}`}
           />
         </a>
@@ -106,6 +153,29 @@ const CAMPAIGNS: IpCampaign[] = [
       },
     ],
     tone: 'rose',
+    feature: true,
+  },
+  {
+    index: '07',
+    industry: '美妆行业 · 冰雪季',
+    title: '2026美妆冰雪季「#赴一场冬日美约」星图直充活动',
+    period: '2026.11.16 — 12.31',
+    quota: '500万 / 300万 / 200万 / 100万 / 30万',
+    summary:
+      '聚焦冰雪出游、冬日妆容与严苛环境功效实测，以 OPBU 内容生态与精选达人矩阵，串联趋势引领、场景种草和转化承接。',
+    benefits: [
+      '搜索组件 2.0 / 1.0 多词与共创组件（按档位适用）',
+      '精选达人合作企划与限时服务费抵扣激励',
+      '冰雪季特色达人供给与冬日美妆场景种草',
+    ],
+    links: [
+      {
+        label: '查看活动方案',
+        url: 'https://bytedance.larkoffice.com/docx/IuxRdKfbYo2EfHxKVYucahuwnjh?from=from_copylink',
+        primary: true,
+      },
+    ],
+    tone: 'winter',
     feature: true,
   },
   {
@@ -245,7 +315,7 @@ const CAMPAIGNS: IpCampaign[] = [
   },
 ];
 
-const CAMPAIGN_ORDER = ['00', '05', '01', '03', '06', '02', '04'];
+const CAMPAIGN_ORDER = ['00', '07', '05', '01', '03', '06', '02', '04'];
 
 export function IpCampaignModule() {
   const preview =
@@ -272,7 +342,7 @@ export function IpCampaignModule() {
         </div>
         <div className="ip-summary">
           <Sparkles size={18} />
-          <span>7 个精选企划</span>
+          <span>{CAMPAIGNS.length} 个精选企划</span>
           <b>2026 双旦 · 秋冬档</b>
         </div>
       </div>

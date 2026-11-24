@@ -23,17 +23,24 @@ import {
   Star,
   UsersRound,
 } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { FeaturedTalentSidebarEntry } from './AgencyBookletRail';
-import { AgencyModule } from './AgencyModule';
 import { BookletModule } from './BookletModule';
 import { FeaturedTalentIntro } from './FeaturedTalentIntro';
 import { IpCampaignModule } from './IpCampaignModule';
-import { P0AuthorsModule } from './P0AuthorsModule';
 import { SharedAvatarVisual } from './P0Avatar';
 import { TeamModule } from './TeamModule';
 
 import { ModuleBanner, type ModuleKey } from './ModuleBanner';
+
+const AgencyModule = lazy(() =>
+  import('./AgencyModule').then(module => ({ default: module.AgencyModule })),
+);
+const P0AuthorsModule = lazy(() =>
+  import('./P0AuthorsModule').then(module => ({
+    default: module.P0AuthorsModule,
+  })),
+);
 
 type P0ProfileDoc = { profiles: Record<string, string> };
 
@@ -278,12 +285,20 @@ function LiveTalentModule({
 
   useEffect(() => {
     let active = true;
-    import('@/data/p0ProfileUrls.json')
-      .then(module => {
-        if (!active) return;
-        setP0ProfileSecIds(
-          (module.default as unknown as P0ProfileDoc).profiles,
-        );
+    // The publication-scoped mapping is fetched only when industry/node is opened.
+    // Fall back to the bundled mapping for development or a failed static request.
+    fetch(new URL('./profile-links.json', document.baseURI))
+      .then(response => {
+        if (!response.ok) throw new Error('主页映射暂时不可用');
+        return response.json() as Promise<Record<string, string>>;
+      })
+      .catch(() =>
+        import('@/data/p0ProfileUrls.json').then(
+          module => (module.default as unknown as P0ProfileDoc).profiles,
+        ),
+      )
+      .then(profiles => {
+        if (active) setP0ProfileSecIds(profiles);
       })
       .catch(error => {
         console.error(error);
@@ -664,10 +679,14 @@ function App() {
         )}
         {module === 'team' && <TeamModule />}
         {module === 'ai' && (
-          <>
+          <Suspense
+            fallback={
+              <div className="state-panel">正在加载代理商达人资料…</div>
+            }
+          >
             <AgencyModule />
             <P0AuthorsModule />
-          </>
+          </Suspense>
         )}
         <footer>
           <span>精选达人供给库 v1.0 · Powered by 飞书数据</span>

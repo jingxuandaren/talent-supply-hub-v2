@@ -1055,6 +1055,24 @@ main {
   grid-column: 1 / -1;
   --ip-accent: #ff7eb6;
 }
+.ip-gallery-07 {
+  display: grid;
+  /* Proportional column widths keep all five images at the same natural height. */
+  grid-template-columns:
+    minmax(0, 0.74765625fr) minmax(0, 0.74765625fr)
+    minmax(0, 1.7777777778fr) minmax(0, 0.74765625fr)
+    minmax(0, 1.7777777778fr);
+  align-items: start;
+  gap: 12px;
+  margin-top: 18px;
+}
+.ip-gallery-07 img {
+  height: auto;
+  object-fit: contain;
+}
+.ip-grid > .ip-card.winter {
+  --ip-accent: #8fcdf8;
+}
 .ip-gallery-00 {
   display: grid;
   /* Allocate width by each original image's aspect ratio for equal heights. */

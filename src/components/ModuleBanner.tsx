@@ -46,12 +46,12 @@ const introductions = {
     kicker: 'CONTENT IP · 合作灵感',
     title: '特色 IP，让内容连接品牌',
     description:
-      '聚合 7 个秋冬重点合作企划，探索特色内容资产、达人权益与品牌共创机会。',
+      '聚合 8 个秋冬重点合作企划，探索特色内容资产、达人权益与品牌共创机会。',
     action: '查看 IP 合作企划',
     secondary: '发现行业达人',
     target: 'industry',
     icon: Star,
-    detail: '7 个合作企划',
+    detail: '8 个合作企划',
   },
   team: {
     kicker: 'CREATOR TEAMS · 协同供给',

@@ -131,6 +131,7 @@ def write_profile_link_bootstrap(dist, source_dir):
     scoped = {star_id: sec_uid for star_id, sec_uid in profiles.items() if star_id in snapshot_ids}
     payload = 'window.__p0ProfileSecIds=' + json.dumps(scoped, separators=(',', ':')) + ';\n'
     (dist / 'profile-links.js').write_text(payload)
+    (dist / 'profile-links.json').write_text(json.dumps(scoped, separators=(',', ':')))
     return len(scoped)
 
 
@@ -206,7 +207,7 @@ def main():
     csv_anchor_position = text.index(csv_anchor)
     module_matches = [
         match
-        for match in re.finditer(r'(?:^|\{)(\d+)\(a,t,i\)\{', text)
+        for match in re.finditer(r'(?:^|[,{])(\d+)\(\w+,\w+,\w+\)\{', text)
         if match.start() < csv_anchor_position
     ]
     assert module_matches, 'Application module adapter changed'
@@ -220,20 +221,24 @@ def main():
     policy = json.dumps({'industry': INDUSTRY, 'node': NODE}, ensure_ascii=False, separators=(',', ':'))
     injection = f'const __p={policy},__n=v=>String(v??" ").normalize("NFKC").replace(/\\s+/g,"").toLowerCase(),__b=new Set(({label}.startsWith("节点")?__p.node:{label}.startsWith("行业")?__p.industry:[]).map(__n)),__k={headers}.map((v,i)=>__b.has(__n(v))?-1:i).filter(i=>i>=0);{rows}={rows}.map(r=>__k.map(i=>r[i]));{headers}=__k.map(i=>{headers}[i]);'
     avatar_ids = json.dumps(list(sprites), separators=(',', ':'))
-    text = text[:csv_start] + 'const __nodeAvatarIds=new Set(' + avatar_ids + ');' + prefix + injection + text[csv_start + len(prefix):]
-    node_export_anchor = 'let r=p.trim().toLowerCase(),s=!z&&r?L.rows.filter('
-    assert text.count(node_export_anchor) == 1, 'Node full-export adapter changed'
+    text = text[:csv_start] + prefix + injection + text[csv_start + len(prefix):]
+    node_export_pattern = r'let (\w+)=(\w+)\.trim\(\)\.toLowerCase\(\),(\w+)=!(\w+)&&\1\?(\w+)\.rows\.filter\('
+    assert len(re.findall(node_export_pattern, text)) == 1, 'Node full-export adapter changed'
     avatar_sort_pattern = re.compile(
-        r'return!!\((\w+)\[i\]\|\|(\w+)\[i\]\)\};return Number\(!r\(a\)\)-Number\(!r\(i\)\)'
+        r'return!!\(([\w.]+)\[(\w+)\]\|\|([\w.]+)\[\2\]\)\};return Number\(!(\w+)\((\w+)\)\)-Number\(!\4\(\2\)\)'
     )
     avatar_sort_matches = list(avatar_sort_pattern.finditer(text))
     assert len(avatar_sort_matches) == 1, 'Node preview ordering adapter changed'
     avatar_sort_match = avatar_sort_matches[0]
-    assert not re.search(r'\},\d+\(a,t,i\)\{', text[csv_start:avatar_sort_match.start()]), 'Avatar Set crosses module boundary'
+    avatar_modules = list(re.finditer(r'(?:^|[,{])(\d+)\(\w+,\w+,\w+\)\{', text[:avatar_sort_match.start()]))
+    assert avatar_modules, 'Avatar module adapter changed'
+    avatar_module = avatar_modules[-1]
+    # Keep the avatar set in the module that consumes it, not the shared CSV chunk.
+    text = text[:avatar_module.end()] + 'const __nodeAvatarIds=new Set(' + avatar_ids + ');' + text[avatar_module.end():]
     text = avatar_sort_pattern.sub(
         lambda match: (
-            f'return!!({match[1]}[i]||{match[2]}[i]||__nodeAvatarIds.has(i))}};'
-            'return Number(!r(a))-Number(!r(i))'
+            f'return!!({match[1]}[{match[2]}]||{match[3]}[{match[2]}]||__nodeAvatarIds.has({match[2]}))}};'
+            f'return Number(!{match[4]}({match[5]}))-Number(!{match[4]}({match[2]}))'
         ),
         text,
         count=1,
@@ -285,8 +290,8 @@ def main():
             html = re.sub(r'(src="[^"?]+\.js)(?:\?[^" ]*)?"', lambda m: m[1] + '?release=' + release + '"', path.read_text())
             # Remove the superseded DOM supplement, if an older release used it.
             html = re.sub(r'<script[^>]*src="\./node-avatar-fix[^\"]*"[^>]*></script>', '', html)
-            if 'profile-links.js' not in html:
-                html = re.sub(r'(<script\b)', f'<script src="./profile-links.js?release={release}"></script>\\1', html, count=1)
+            # Profile links load on demand in LiveTalentModule, never block the home page.
+            html = re.sub(r'<script[^>]*src="(?:\./)?profile-links[^\"]*"[^>]*></script>', '', html)
             path.write_text(html)
     print(json.dumps({'rows': counts, 'nodeAvatarIds': len(sprites), 'hdAvatars': len(hd_avatars), 'profileLinks': profile_link_count, 'page': new_page.name, 'release': release}, ensure_ascii=False))
 
