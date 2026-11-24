@@ -54,7 +54,7 @@ jobs:
           git clone --depth=1 --branch gh-pages https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source"
           git clone --depth=1 https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source-main"
           rsync -a "$tmpdir/release/source/" "$tmpdir/source-main/"
-          rm -f "$tmpdir/source"/static/js/async/page.*
+          rm -f "$tmpdir/source"/static/js/async/page.* "$tmpdir/source"/static/js/main.* "$tmpdir/source"/static/js/625.*
           rsync -a "$tmpdir/release/pages/" "$tmpdir/source/"
           git fetch origin gh-pages:gh-pages
           git worktree add "$tmpdir/target" gh-pages
