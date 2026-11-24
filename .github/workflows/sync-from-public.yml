@@ -20,76 +20,57 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Sync source main branch
+      - name: Apply source and published content updates
         run: |
-          set -euxo pipefail
+          set -euo pipefail
           tmpdir="$(mktemp -d)"
+          echo "efe315cde5df208bb34dcc268f39e90b21de69ad32c9ba39b96856186ea20973  release-content-20261124.zip" | sha256sum --check
+          unzip -q release-content-20261124.zip -d "$tmpdir/release"
           git clone --depth=1 https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source"
-          mkdir -p .github/workflows
-          rsync -a --delete \
-            --exclude ".git" \
-            --exclude ".github/workflows/sync-from-public.yml" \
-            "$tmpdir/source/" ./
-
-      - name: Commit and push main
-        run: |
-          set -euxo pipefail
-          if git diff --quiet && git diff --cached --quiet; then
-            echo "No changes to sync on main"
-            exit 0
-          fi
+          rsync -a --delete --exclude ".git" --exclude ".github/workflows/sync-from-public.yml" --exclude "release-content-20261124.zip" "$tmpdir/source/" ./
+          rsync -a "$tmpdir/release/source/" ./
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "chore: sync from talent-supply-hub-public"
-          git push origin HEAD:main
+          if ! git diff --cached --quiet; then
+            git commit -m "同步达人团双旦IP与节点导出规则"
+            git push origin HEAD:main
+          fi
 
   sync-pages:
+    needs: sync-main
     runs-on: ubuntu-latest
     steps:
       - name: Checkout target repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Mirror source gh-pages branch
+      - name: Publish updated Pages with cached avatars
         run: |
-          set -euxo pipefail
+          set -euo pipefail
           tmpdir="$(mktemp -d)"
-          mkdir -p "$tmpdir/cache/avatars"
-          if [ -f .github/cached-avatars/douyin-hd-6870163473385390093-725169213832.jpg.b64/douyin-hd-6870163473385390093-725169213832.jpg.b64 ]; then
-            base64 -d .github/cached-avatars/douyin-hd-6870163473385390093-725169213832.jpg.b64/douyin-hd-6870163473385390093-725169213832.jpg.b64 > "$tmpdir/cache/avatars/douyin-hd-6870163473385390093-725169213832.jpg"
-          fi
+          echo "efe315cde5df208bb34dcc268f39e90b21de69ad32c9ba39b96856186ea20973  release-content-20261124.zip" | sha256sum --check
+          unzip -q release-content-20261124.zip -d "$tmpdir/release"
           git clone --depth=1 --branch gh-pages https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source"
-          git clone --depth=1 --branch main https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source-main"
-          if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
-            git fetch origin gh-pages:gh-pages
-            git worktree add "$tmpdir/target" gh-pages
-          else
-            git worktree add --detach "$tmpdir/target"
-            cd "$tmpdir/target"
-            git switch --orphan gh-pages
-            cd - >/dev/null
-          fi
+          git clone --depth=1 https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source-main"
+          rsync -a "$tmpdir/release/source/" "$tmpdir/source-main/"
+          rm -f "$tmpdir/source"/static/js/async/page.*
+          rsync -a "$tmpdir/release/pages/" "$tmpdir/source/"
+          git fetch origin gh-pages:gh-pages
+          git worktree add "$tmpdir/target" gh-pages
           mkdir -p "$tmpdir/cache/avatars"
           cd "$tmpdir/target"
           if [ -d avatars ]; then cp -a avatars/. "$tmpdir/cache/avatars/"; fi
           find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
-          rsync -a --delete \
-            --exclude ".git" \
-            "$tmpdir/source/" ./
+          rsync -a --delete --exclude ".git" "$tmpdir/source/" ./
           touch .nojekyll
           mkdir -p avatars
-          if [ -d "$tmpdir/cache/avatars" ]; then cp -a "$tmpdir/cache/avatars/." avatars/; fi
-          python3 -c 'import base64,gzip;exec(gzip.decompress(base64.b64decode("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")))' \
-            --dist "$tmpdir/target" --source-dir "$tmpdir/source-main/src/data"
+          cp -a "$tmpdir/cache/avatars/." avatars/
+          python3 "$tmpdir/source-main/scripts/prepare_public_release.py" --dist "$tmpdir/target" --source-dir "$tmpdir/source-main/src/data"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          if git diff --cached --quiet; then
-            echo "No changes to sync on gh-pages"
-            exit 0
+          if ! git diff --cached --quiet; then
+            git commit -m "发布双旦海报等高布局与达人团更新"
+            git push origin HEAD:gh-pages
           fi
-          git commit -m "chore: sync gh-pages from talent-supply-hub-public"
-          git push origin gh-pages
