@@ -15,10 +15,10 @@
         "./static/js/lib-polyfill.db2a6f71b3.js",
         "./static/js/625.4a701a41b1.js",
         "./static/js/main.b3026bf815.js",
-        "./static/css/main.91325880d2.css"
+        "./static/css/main.a6b5e82105.css"
       ],
       "referenceCssAssets": [
-        "./static/css/main.91325880d2.css"
+        "./static/css/main.a6b5e82105.css"
       ]
     },
     "page": {
@@ -26,7 +26,7 @@
         807
       ],
       "assets": [
-        "./static/js/async/page.1aa06b6d50.js"
+        "./static/js/async/page.586f54680b.js"
       ],
       "referenceCssAssets": []
     }
