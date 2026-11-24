@@ -10,7 +10,7 @@ export function IndustryShareDonut() {
     <div
       className="industry-share-donut"
       role="img"
-      aria-label={`11 个重点行业供给占比，总供给 ${INDUSTRY_TOTAL.toLocaleString()} 位达人`}
+      aria-label={`${INDUSTRY_OPTIONS.length} 个重点行业供给占比，总供给 ${INDUSTRY_TOTAL.toLocaleString()} 位达人`}
     >
       <svg viewBox="0 0 180 180" aria-hidden="true">
         <circle

@@ -7,6 +7,7 @@ import { rewriteNodeSalesOwners } from '@/lib/nodeExportPolicy';
 import { clearPublicSheetCache, fetchPublicSheet } from '@/lib/publicSheet';
 import { shuffleNodeRows } from '@/lib/shuffleNodeRows';
 import { downloadRowsTable } from '@/lib/tableCsv';
+import { getTalentField } from '@/lib/talentFieldAliases';
 import {
   ArrowUpRight,
   BookOpen,
@@ -49,6 +50,8 @@ type SourceOption = {
   label: string;
   sheetId: string;
   count: number;
+  sheetUrl?: string;
+  columnEnd?: string;
 };
 
 const DISPLAY_LIMIT = 99;
@@ -70,7 +73,7 @@ const MODULES = [
   {
     key: 'industry' as const,
     label: '行业',
-    desc: '11 个重点行业',
+    desc: `${INDUSTRY_OPTIONS.length} 个重点行业`,
     icon: Globe2,
   },
   {
@@ -166,7 +169,7 @@ function TalentCard({
   mode: 'industry' | 'node';
   p0ProfileSecIds: Record<string, string>;
 }) {
-  const get = (name: string) => row[headers.indexOf(name)];
+  const get = (name: string) => getTalentField(headers, row, name);
   const name = text(get('星图达人抖音昵称'));
   const city = text(get('常驻城市'));
   const talentType = text(get('达人类型'));
@@ -314,7 +317,7 @@ function LiveTalentModule({
   } | null>(null);
   const current = options.find(item => item.id === selected) ?? options[0];
   const isNode = mode === 'node';
-  const sourceUrl = `${isNode ? NODE_URL : INDUSTRY_URL}?sheet=${current.sheetId}`;
+  const sourceUrl = `${isNode ? NODE_URL : (current.sheetUrl ?? INDUSTRY_URL)}?sheet=${current.sheetId}`;
 
   useEffect(() => {
     let active = true;
@@ -419,7 +422,7 @@ function LiveTalentModule({
           <p>
             {isNode
               ? '对外公开版：按营销节点与行业规则汇总真实达人供给。'
-              : '对外公开版：覆盖 11 个重点行业，汇总真实达人与合作信息。'}
+              : `对外公开版：覆盖 ${INDUSTRY_OPTIONS.length} 个重点行业，汇总真实达人与合作信息。`}
           </p>
         </div>
         <button

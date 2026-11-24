@@ -1,3 +1,4 @@
+import { INDUSTRY_OPTIONS } from '@/data/industryOptions';
 import {
   ArrowDown,
   Bot,
@@ -23,13 +24,12 @@ const introductions = {
   industry: {
     kicker: 'INDUSTRY · 精准发现',
     title: '行业精选达人供给',
-    description:
-      '覆盖 11 个重点行业，从细分领域、达人类型到商业报价，发现适合品牌的合作人选。',
+    description: `覆盖 ${INDUSTRY_OPTIONS.length} 个重点行业，从细分领域、达人类型到商业报价，发现适合品牌的合作人选。`,
     action: '浏览行业达人',
     secondary: '查看营销节点',
     target: 'node',
     icon: Globe2,
-    detail: '11 个重点行业',
+    detail: `${INDUSTRY_OPTIONS.length} 个重点行业`,
   },
   node: {
     kicker: 'MOMENTS · 节点营销',
@@ -119,7 +119,7 @@ export function ModuleBanner({
       {module === 'industry' ? (
         <div className="module-decoration industry-share-decoration">
           <IndustryShareDonut />
-          <span>11 个行业供给占比</span>
+          <span>{INDUSTRY_OPTIONS.length} 个行业供给占比</span>
         </div>
       ) : module !== 'node' ? (
         <div className="module-decoration" aria-hidden="true">

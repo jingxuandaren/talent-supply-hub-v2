@@ -4,6 +4,8 @@ export type IndustryOption = {
   sheetId: string;
   count: number;
   color: string;
+  sheetUrl?: string;
+  columnEnd?: string;
 };
 
 export const INDUSTRY_OPTIONS: IndustryOption[] = [
@@ -83,6 +85,16 @@ export const INDUSTRY_OPTIONS: IndustryOption[] = [
     sheetId: '10chQs',
     count: 2131,
     color: '#94a3b8',
+  },
+  {
+    id: 'industry-education',
+    label: '教育',
+    sheetId: '2hNqlU',
+    count: 2000,
+    color: '#ffb347',
+    sheetUrl:
+      'https://bytedance.larkoffice.com/wiki/Ukn0wRVQCiwn2KkxFVGcj6DUnte',
+    columnEnd: 'P',
   },
 ];
 

@@ -82,6 +82,12 @@
       "sheetId": "10chQs"
     },
     {
+      "bindingId": "industry-education",
+      "resourceType": "sheetRange",
+      "spreadsheetToken": "ZPqJs6NRshvEcctvfH9cH2N7nUg",
+      "sheetId": "2hNqlU"
+    },
+    {
       "bindingId": "node-1111",
       "resourceType": "sheetRange",
       "spreadsheetToken": "BfFYsEunBhI0PKtGKzfc6smbnic",
