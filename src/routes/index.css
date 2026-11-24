@@ -1051,6 +1051,25 @@ main {
   gap: 16px;
   margin-top: 24px;
 }
+.ip-grid > .ip-card.ip-feature-card {
+  grid-column: 1 / -1;
+  --ip-accent: #ff7eb6;
+}
+.ip-gallery-00 {
+  display: grid;
+  /* Allocate width by each original image's aspect ratio for equal heights. */
+  grid-template-columns: minmax(0, 1.8299389002fr) minmax(0, 1.2465581977fr);
+  align-items: start;
+  gap: 16px;
+  margin-top: 18px;
+}
+.ip-gallery-00 a {
+  background: rgba(1, 16, 37, 0.25);
+}
+.ip-gallery-00 img {
+  height: auto;
+  object-fit: contain;
+}
 .ip-card {
   --ip-accent: #5bdef5;
   position: relative;
@@ -1522,6 +1541,12 @@ footer {
   .card-grid,
   .ip-grid {
     grid-template-columns: 1fr;
+  }
+  .ip-gallery-00 {
+    grid-template-columns: 1fr;
+  }
+  .ip-gallery-00 img {
+    max-height: none;
   }
   .ip-card.rose {
     grid-column: auto;

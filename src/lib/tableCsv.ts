@@ -1,3 +1,5 @@
+import { filterExportColumns } from './exportColumns';
+
 export function csvEscape(value: unknown) {
   const normalized = value === null || value === undefined ? '' : String(value);
   return `"${normalized.replace(/"/g, '""')}"`;
@@ -9,8 +11,9 @@ export function downloadRowsTable(
   rows: readonly (readonly unknown[])[],
   idHeader = '达人星图id',
 ) {
-  const idIndex = headers.indexOf(idHeader);
-  const csvLines = [headers, ...rows].map((line, lineIndex) =>
+  const filtered = filterExportColumns(fileLabel, headers, rows);
+  const idIndex = filtered.headers.indexOf(idHeader);
+  const csvLines = [filtered.headers, ...filtered.rows].map((line, lineIndex) =>
     line
       .map((value, columnIndex) => {
         let normalized =

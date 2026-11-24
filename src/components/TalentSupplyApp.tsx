@@ -1,7 +1,9 @@
+import { agencyAvatarSprites } from '@/data/agencyAvatarSprites';
 import { douyinAvatarMap } from '@/data/douyinAvatarMap';
 import { industryAvatarSprites } from '@/data/industryAvatarSprites';
 import { INDUSTRY_OPTIONS } from '@/data/industryOptions';
 import industryProfiles from '@/data/industryTalentProfiles.json';
+import { rewriteNodeSalesOwners } from '@/lib/nodeExportPolicy';
 import { clearPublicSheetCache, fetchPublicSheet } from '@/lib/publicSheet';
 import { shuffleNodeRows } from '@/lib/shuffleNodeRows';
 import { downloadRowsTable } from '@/lib/tableCsv';
@@ -28,9 +30,12 @@ import { BookletModule } from './BookletModule';
 import { FeaturedTalentIntro } from './FeaturedTalentIntro';
 import { IpCampaignModule } from './IpCampaignModule';
 import { P0AuthorsModule } from './P0AuthorsModule';
+import { SharedAvatarVisual } from './P0Avatar';
 import { TeamModule } from './TeamModule';
 
 import { ModuleBanner, type ModuleKey } from './ModuleBanner';
+
+type P0ProfileDoc = { profiles: Record<string, string> };
 
 type SourceOption = {
   id: string;
@@ -101,10 +106,6 @@ function compactPrice(value: unknown) {
     : `¥${amount}`;
 }
 
-function initials(name: string) {
-  return Array.from(name).slice(0, 2).join('');
-}
-
 function FeishuErrorPanel({
   error,
   sourceUrl,
@@ -151,7 +152,13 @@ function TalentCard({
   row,
   headers,
   mode,
-}: { row: unknown[]; headers: string[]; mode: 'industry' | 'node' }) {
+  p0ProfileSecIds,
+}: {
+  row: unknown[];
+  headers: string[];
+  mode: 'industry' | 'node';
+  p0ProfileSecIds: Record<string, string>;
+}) {
   const get = (name: string) => row[headers.indexOf(name)];
   const name = text(get('星图达人抖音昵称'));
   const city = text(get('常驻城市'));
@@ -170,9 +177,11 @@ function TalentCard({
       { profileUrl: string | null; displayId: string }
     >
   )[id];
-  const sprite = industryAvatarSprites[id];
-  // 仅采用经过身份核验的 sec_uid 真实主页；未核验时不输出伪链接。
-  const douyinUrl = talentProfile?.profileUrl ?? null;
+  // 行业快照与 P0 作者库均只收录已核验的 sec_uid 真实主页；未核验时不输出伪链接。
+  const p0SecUid = p0ProfileSecIds[id];
+  const douyinUrl =
+    talentProfile?.profileUrl ??
+    (p0SecUid ? `https://www.douyin.com/user/${p0SecUid}` : null);
   const displayIdText =
     talentProfile?.displayId || douyinAvatarMap[id]?.displayId || '';
   const subtitle =
@@ -191,40 +200,14 @@ function TalentCard({
             rel="noreferrer"
             aria-label={`打开 ${name} 的抖音主页`}
           >
-            {sprite ? (
-              <span
-                className="avatar-sprite"
-                style={{
-                  backgroundImage: `url(${sprite.avatarUrl})`,
-                  backgroundPosition: sprite.avatarPosition,
-                  backgroundSize: `${sprite.spriteSize[0]}px ${sprite.spriteSize[1]}px`,
-                }}
-                role="img"
-                aria-label={`${name} 头像`}
-              />
-            ) : (
-              <span>{initials(name)}</span>
-            )}
+            <SharedAvatarVisual id={id} name={name} preferIndustry />
           </a>
         ) : (
           <span
             className="avatar avatar-disabled"
             aria-label={`${name} 暂未获取到抖音主页`}
           >
-            {sprite ? (
-              <span
-                className="avatar-sprite"
-                style={{
-                  backgroundImage: `url(${sprite.avatarUrl})`,
-                  backgroundPosition: sprite.avatarPosition,
-                  backgroundSize: `${sprite.spriteSize[0]}px ${sprite.spriteSize[1]}px`,
-                }}
-                role="img"
-                aria-label={`${name} 头像`}
-              />
-            ) : (
-              <span>{initials(name)}</span>
-            )}
+            <SharedAvatarVisual id={id} name={name} preferIndustry />
           </span>
         )}
         <div className="talent-title">
@@ -289,6 +272,26 @@ function LiveTalentModule({
   const [downloadNotice, setDownloadNotice] = useState('');
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [p0ProfileSecIds, setP0ProfileSecIds] = useState<
+    Record<string, string>
+  >({});
+
+  useEffect(() => {
+    let active = true;
+    import('@/data/p0ProfileUrls.json')
+      .then(module => {
+        if (!active) return;
+        setP0ProfileSecIds(
+          (module.default as unknown as P0ProfileDoc).profiles,
+        );
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
   const [fullData, setFullData] = useState<{
     headers: string[];
     rows: unknown[][];
@@ -338,7 +341,13 @@ function LiveTalentModule({
       shuffleSeed,
       row => text(row[idIndex]),
       previousFirst,
-    );
+    ).sort((left, right) => {
+      const hasAvatar = (row: unknown[]) => {
+        const id = text(row[idIndex]).trim().replace(/\.0+$/, '');
+        return Boolean(industryAvatarSprites[id] || agencyAvatarSprites[id]);
+      };
+      return Number(!hasAvatar(left)) - Number(!hasAvatar(right));
+    });
   }, [fullData?.rows, isNode, headers, shuffleSeed, previousFirst]);
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -357,11 +366,15 @@ function LiveTalentModule({
     setDownloadNotice('');
     try {
       const needle = query.trim().toLowerCase();
-      const exportRows = needle
-        ? fullData.rows.filter(row =>
-            row.some(value => text(value).toLowerCase().includes(needle)),
-          )
-        : fullData.rows;
+      const filteredRows =
+        !isNode && needle
+          ? fullData.rows.filter(row =>
+              row.some(value => text(value).toLowerCase().includes(needle)),
+            )
+          : fullData.rows;
+      const exportRows = isNode
+        ? rewriteNodeSalesOwners(fullData.headers, filteredRows)
+        : filteredRows;
       const snapshotDate = fullData.capturedAt?.slice(0, 10);
       downloadRowsTable(
         `${modulePrefix}-${safeLabel}-${exportRows.length}条${snapshotDate ? `-源表快照${snapshotDate}` : ''}.csv`,
@@ -488,6 +501,7 @@ function LiveTalentModule({
                     row={row}
                     headers={headers}
                     mode={mode}
+                    p0ProfileSecIds={p0ProfileSecIds}
                   />
                 ))}
               </div>

@@ -1,5 +1,7 @@
 import { ArrowUpRight, BookOpen, UsersRound } from 'lucide-react';
 import autoTeamHero from '../assets/team-auto-cover.png';
+import goodsDecisionTeamHero from '../assets/team-goods-decision-cover.png';
+import lifeDramaTeamHero from '../assets/team-life-drama-cover.jpg';
 import newYearTeamHero from '../assets/team-newyear-cover.png';
 import potentialTeamHero from '../assets/team-potential-cover.png';
 
@@ -16,6 +18,36 @@ type TeamSpec = {
 };
 
 const TEAMS: TeamSpec[] = [
+  {
+    name: '2026巨量星图「人生百态剧情团」',
+    statusLabel: 'NEW',
+    docUrl: 'https://bytedance.larkoffice.com/wiki/IfzPwJ97UimaNkklxrlcxpxUn7d',
+    coverImage: lifeDramaTeamHero,
+    coverAlt: '2026巨量星图「人生百态剧情团」三大营销目标与特色达人团供给图',
+    docSummary: {
+      subtitle: '已发布资料：项目总览',
+      bullets: [
+        '营销目标：围绕大曝光、强种草、深转化，承接新品造势、场景种草和节点转化',
+        '达人供给：汇聚真人演绎、AIGC 创意、生活叙事与好物推荐达人，候选池 2700+',
+        '合作方式：曝光优先植入视频，场景种草优先定制视频，购买承接短直联动',
+      ],
+    },
+  },
+  {
+    name: '2026巨量星图「年度好物决策团」',
+    statusLabel: 'NEW',
+    docUrl: 'https://bytedance.larkoffice.com/wiki/Lf02weC5fiUeQ9kPZabc7wl9nDb',
+    coverImage: goodsDecisionTeamHero,
+    coverAlt: '2026巨量星图「年度好物决策团」项目核心价值信息图',
+    docSummary: {
+      subtitle: '已发布资料：项目总览',
+      bullets: [
+        '营销节点：双十二、双旦跨年、CNY 年货节，聚焦年末至 2027 年初消费决策',
+        '覆盖行业：美妆、3C 及电器、食品饮料、日化、家居建材',
+        '内容供给：4 大特色子团 × 8 类内容玩法，支持一口价与短直联动',
+      ],
+    },
+  },
   {
     name: '2026巨量星图「驭见星途·汽车达人团」',
     statusLabel: 'NEW',
@@ -65,11 +97,9 @@ const TEAMS: TeamSpec[] = [
       ],
     },
   },
-  { name: '2026巨量星图「年度好物决策团」', statusLabel: '敬请期待' },
   { name: '2026巨量星图「优质参数研究院」', statusLabel: '敬请期待' },
   { name: '2026巨量星图达人团【真实家庭实验】', statusLabel: '敬请期待' },
   { name: '2026巨量星图「种收有道·短直达人团」', statusLabel: '敬请期待' },
-  { name: '2026巨量星图「剧情达人团」', statusLabel: '敬请期待' },
   { name: '2026巨量星图「旅行科普」达人团', statusLabel: '敬请期待' },
   { name: '目2026巨量星图服饰行业「创意营销」达人团', statusLabel: '敬请期待' },
   {

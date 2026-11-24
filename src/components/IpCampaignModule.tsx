@@ -19,9 +19,12 @@ import homeImage from '../assets/XJtIMkuowNpPIBrpSYoEOSvSODiZFCvpEmvmlnxI.png';
 import q4Image4 from '../assets/cmsLHnGlZkFuKWeFNgwRDAUiLqaAUPWIrLmtlvTT.png';
 import q4Image2 from '../assets/fIhHpwuYeMgWphuTatktEfEsBjkuKbnBHzrJnprO.png';
 import q4Image3 from '../assets/iLQXCkAlgyFnzmlaVgaPjBxFWqIRadlKJoDLmfBC.png';
+import doubleHolidayPoster1 from '../assets/ip-double-holiday-poster-1.png';
+import doubleHolidayPoster2 from '../assets/ip-double-holiday-poster-2.png';
 import q4Image1 from '../assets/kNYShsdOiBKkobykZECUHhOvZKZThNbwbdQMtzRT.png';
 
 const CAMPAIGN_IMAGES: Record<string, string[]> = {
+  '00': [doubleHolidayPoster1, doubleHolidayPoster2],
   '02': [
     gameImage1,
     gameImage2,
@@ -78,9 +81,33 @@ type IpCampaign = {
   benefits: string[];
   links: CampaignLink[];
   tone: string;
+  feature?: boolean;
 };
 
 const CAMPAIGNS: IpCampaign[] = [
+  {
+    index: '00',
+    industry: '全行业 · 双旦节点',
+    title: '巨量星图「双旦奇遇派对」达人合作方案',
+    period: '2026.11.16 — 2027.01.15',
+    quota: '50万 / 100万 / 200万 / 500万',
+    summary:
+      '以节日创意、节日种草和专业测评三阶内容递进，覆盖蓄水、爆发与长尾阶段，承接双旦送礼、悦己和节日参与需求。',
+    benefits: [
+      '搜索 2.0、搜索 1.0 多词与共创组件',
+      'H5 露出、PR 宣发与精选达人激励',
+      '星选种草团 3% 赠款，电商联投 55% 反哺',
+    ],
+    links: [
+      {
+        label: '查看活动方案',
+        url: 'https://bytedance.larkoffice.com/docx/PPNgdqUmSoWWKXxBlv9cjCT1nOc?from=from_copylink',
+        primary: true,
+      },
+    ],
+    tone: 'rose',
+    feature: true,
+  },
   {
     index: '01',
     industry: '日化行业',
@@ -218,7 +245,7 @@ const CAMPAIGNS: IpCampaign[] = [
   },
 ];
 
-const CAMPAIGN_ORDER = ['05', '01', '03', '06', '02', '04'];
+const CAMPAIGN_ORDER = ['00', '05', '01', '03', '06', '02', '04'];
 
 export function IpCampaignModule() {
   const preview =
@@ -245,14 +272,14 @@ export function IpCampaignModule() {
         </div>
         <div className="ip-summary">
           <Sparkles size={18} />
-          <span>6 个精选企划</span>
-          <b>2026 秋冬档</b>
+          <span>7 个精选企划</span>
+          <b>2026 双旦 · 秋冬档</b>
         </div>
       </div>
       <div className="ip-grid">
         {campaigns.map(campaign => (
           <article
-            className={`ip-card ${campaign.tone}${campaign.index === '02' ? ' ip-game-card' : ''}`}
+            className={`ip-card ${campaign.tone}${campaign.index === '02' ? ' ip-game-card' : ''}${campaign.feature ? ' ip-feature-card' : ''}`}
             key={campaign.index}
           >
             <div className="ip-card-head">

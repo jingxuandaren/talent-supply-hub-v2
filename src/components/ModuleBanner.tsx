@@ -46,18 +46,18 @@ const introductions = {
     kicker: 'CONTENT IP · 合作灵感',
     title: '特色 IP，让内容连接品牌',
     description:
-      '聚合 6 个秋冬重点合作企划，探索特色内容资产、达人权益与品牌共创机会。',
+      '聚合 7 个秋冬重点合作企划，探索特色内容资产、达人权益与品牌共创机会。',
     action: '查看 IP 合作企划',
     secondary: '发现行业达人',
     target: 'industry',
     icon: Star,
-    detail: '6 个合作企划',
+    detail: '7 个合作企划',
   },
   team: {
     kicker: 'CREATOR TEAMS · 协同供给',
     title: '达人组团，放大品牌声量',
     description:
-      '按营销场景组合达人矩阵，当前共 13 个达人团，潜力宝藏达人团标注 NEW，其余保持「敬请期待」；已补充可查看的真实资料将提供文档入口。',
+      '按营销场景组合达人矩阵，当前共 13 个达人团，5 个已上线资料的达人团标注 NEW，其余保持「敬请期待」；已补充可查看的真实资料将提供文档入口。',
     action: '查看 13 个达人团',
     secondary: '先浏览行业达人',
     target: 'industry',
