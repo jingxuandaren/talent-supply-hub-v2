@@ -26,8 +26,14 @@ jobs:
           tmpdir="$(mktemp -d)"
           echo "6a6a9b7f79d8082f4394963730c7e5a65ca1e74b42ffb088d781237e91cdff6d  release-content-20261124.zip" | sha256sum --check
           unzip -q release-content-20261124.zip -d "$tmpdir/release"
+          echo "696098a241adc6914a69cafbb19597875de9b7d7d824d853ddc88989defcbb07  release-ip-winter-20261124.zip" | sha256sum --check
+          rm -f "$tmpdir/release"/pages/static/js/async/page.*
+          unzip -qo release-ip-winter-20261124.zip -d "$tmpdir/release"
+          echo "6cf754c74c0edb3ffc7c03e28736a586ef4697ade95a447dbecd6e19130b4db9  release-performance-20261124.zip" | sha256sum --check
+          rm -f "$tmpdir/release"/pages/static/js/async/page.*
+          unzip -qo release-performance-20261124.zip -d "$tmpdir/release"
           git clone --depth=1 https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source"
-          rsync -a --delete --exclude ".git" --exclude ".github/workflows/sync-from-public.yml" --exclude "release-content-20261124.zip" "$tmpdir/source/" ./
+          rsync -a --delete --exclude ".git" --exclude ".github/workflows/sync-from-public.yml" --exclude "release-content-20261124.zip" --exclude "release-ip-winter-20261124.zip" --exclude "release-performance-20261124.zip" "$tmpdir/source/" ./
           rsync -a "$tmpdir/release/source/" ./
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -51,6 +57,12 @@ jobs:
           tmpdir="$(mktemp -d)"
           echo "6a6a9b7f79d8082f4394963730c7e5a65ca1e74b42ffb088d781237e91cdff6d  release-content-20261124.zip" | sha256sum --check
           unzip -q release-content-20261124.zip -d "$tmpdir/release"
+          echo "696098a241adc6914a69cafbb19597875de9b7d7d824d853ddc88989defcbb07  release-ip-winter-20261124.zip" | sha256sum --check
+          rm -f "$tmpdir/release"/pages/static/js/async/page.*
+          unzip -qo release-ip-winter-20261124.zip -d "$tmpdir/release"
+          echo "6cf754c74c0edb3ffc7c03e28736a586ef4697ade95a447dbecd6e19130b4db9  release-performance-20261124.zip" | sha256sum --check
+          rm -f "$tmpdir/release"/pages/static/js/async/page.*
+          unzip -qo release-performance-20261124.zip -d "$tmpdir/release"
           git clone --depth=1 --branch gh-pages https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source"
           git clone --depth=1 https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source-main"
           rsync -a "$tmpdir/release/source/" "$tmpdir/source-main/"
