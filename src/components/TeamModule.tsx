@@ -1,7 +1,7 @@
 import { ArrowUpRight, BookOpen, UsersRound } from 'lucide-react';
 import autoTeamHero from '../assets/team-auto-cover.png';
 import goodsDecisionTeamHero from '../assets/team-goods-decision-cover.png';
-import lifeDramaTeamHero from '../assets/team-life-drama-cover.jpg';
+import lifeDramaTeamHero from '../assets/team-life-drama-cover.png';
 import newYearTeamHero from '../assets/team-newyear-cover.png';
 import potentialTeamHero from '../assets/team-potential-cover.png';
 
@@ -11,6 +11,7 @@ type TeamSpec = {
   docUrl?: string;
   coverImage?: string;
   coverAlt?: string;
+  coverFit?: 'contain';
   docSummary?: {
     subtitle: string;
     bullets: string[];
@@ -23,7 +24,8 @@ const TEAMS: TeamSpec[] = [
     statusLabel: 'NEW',
     docUrl: 'https://bytedance.larkoffice.com/wiki/IfzPwJ97UimaNkklxrlcxpxUn7d',
     coverImage: lifeDramaTeamHero,
-    coverAlt: '2026巨量星图「人生百态剧情团」三大营销目标与特色达人团供给图',
+    coverAlt: '2026巨量星图「人生百态剧情团」蓝色舞台主题封面',
+    coverFit: 'contain',
     docSummary: {
       subtitle: '已发布资料：项目总览',
       bullets: [
@@ -38,7 +40,8 @@ const TEAMS: TeamSpec[] = [
     statusLabel: 'NEW',
     docUrl: 'https://bytedance.larkoffice.com/wiki/Lf02weC5fiUeQ9kPZabc7wl9nDb',
     coverImage: goodsDecisionTeamHero,
-    coverAlt: '2026巨量星图「年度好物决策团」项目核心价值信息图',
+    coverAlt: '2026巨量星图「年度好物决策团」四大特色子团主题封面',
+    coverFit: 'contain',
     docSummary: {
       subtitle: '已发布资料：项目总览',
       bullets: [
@@ -152,7 +155,13 @@ export function TeamModule() {
               }
             >
               {team.coverImage ? (
-                <img src={team.coverImage} alt={team.coverAlt ?? team.name} />
+                <img
+                  src={team.coverImage}
+                  alt={team.coverAlt ?? team.name}
+                  style={
+                    team.coverFit ? { objectFit: team.coverFit } : undefined
+                  }
+                />
               ) : (
                 <div className="team-cover-placeholder">资料整理中</div>
               )}
