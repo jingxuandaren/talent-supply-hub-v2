@@ -1,5 +1,6 @@
 import { agencyAvatarSprites } from '@/data/agencyAvatarSprites';
 import { douyinAvatarMap } from '@/data/douyinAvatarMap';
+import educationProfiles from '@/data/educationTalentProfiles.json';
 import { industryAvatarSprites } from '@/data/industryAvatarSprites';
 import { INDUSTRY_OPTIONS } from '@/data/industryOptions';
 import industryProfiles from '@/data/industryTalentProfiles.json';
@@ -181,12 +182,19 @@ function TalentCard({
   const id = text(get('达人星图id')).trim().replace(/\.0+$/, '');
   const xingtuUrl =
     id !== '-' ? `https://www.xingtu.cn/ad/creator/author/douyin/${id}` : '#';
-  const talentProfile = (
-    industryProfiles.profiles as Record<
-      string,
-      { profileUrl: string | null; displayId: string }
-    >
-  )[id];
+  const talentProfile =
+    (
+      educationProfiles.profiles as Record<
+        string,
+        { profileUrl: string | null; displayId: string }
+      >
+    )[id] ??
+    (
+      industryProfiles.profiles as Record<
+        string,
+        { profileUrl: string | null; displayId: string }
+      >
+    )[id];
   // 行业快照与 P0 作者库均只收录已核验的 sec_uid 真实主页；未核验时不输出伪链接。
   const p0SecUid = p0ProfileSecIds[id];
   const douyinUrl =
@@ -242,15 +250,20 @@ function TalentCard({
       </div>
       <div className="card-actions">
         {douyinUrl ? (
-          <a href={douyinUrl} target="_blank" rel="noreferrer">
+          <a
+            href={douyinUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`打开 ${name} 的抖音主页`}
+          >
             抖音主页 <ExternalLink size={13} />
           </a>
         ) : (
           <span
             className="card-link-disabled"
-            title="暂未获取到该达人的抖音主页链接"
+            title="暂未核验到该达人的真实抖音主页，可先查看星图主页"
           >
-            抖音主页
+            主页待补充
           </span>
         )}
         <a href={xingtuUrl} target="_blank" rel="noreferrer">
@@ -441,18 +454,22 @@ function LiveTalentModule({
       </div>
       {downloadNotice && <output>{downloadNotice}</output>}
       <div className="filter-bar">
-        <div className="pill-scroll">
+        <nav
+          className="pill-scroll"
+          aria-label={isNode ? '全部营销节点' : '全部行业'}
+        >
           {options.map(item => (
             <button
               key={item.id}
               className={item.id === current.id ? 'pill active' : 'pill'}
+              aria-pressed={item.id === current.id}
               onClick={() => onSelect(item.id)}
             >
               {item.label}
               <span>{item.count.toLocaleString()}</span>
             </button>
           ))}
-        </div>
+        </nav>
         <div className="search-box">
           <Search size={16} />
           <input

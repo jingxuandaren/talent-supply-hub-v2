@@ -1,5 +1,6 @@
 import { agencyAvatarSprites } from '@/data/agencyAvatarSprites';
 import { douyinAvatarMap, douyinAvatarMeta } from '@/data/douyinAvatarMap';
+import { educationAvatarSprites } from '@/data/educationAvatarSprites';
 import { industryAvatarSprites } from '@/data/industryAvatarSprites';
 import { useEffect, useState } from 'react';
 import tongliHd from '../assets/douyin-hd-6693777798747652109.jpg';
@@ -113,6 +114,10 @@ function LegacyAvatarVisual({
   name,
   preferIndustry = false,
 }: SharedAvatarVisualProps) {
+  const educationSprite = educationAvatarSprites[id];
+  if (educationSprite) {
+    return <SpriteVisual sprite={educationSprite} name={name} />;
+  }
   const industrySprite = preferIndustry ? industryAvatarSprites[id] : undefined;
   if (industrySprite) {
     return <SpriteVisual sprite={industrySprite} name={name} />;

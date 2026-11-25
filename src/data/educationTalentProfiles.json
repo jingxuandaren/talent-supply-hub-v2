@@ -1,0 +1,134 @@
+{
+  "meta": {
+    "total": 2000,
+    "baselineAvatar": 1554,
+    "avatarCovered": 1574,
+    "newAvatars": 20,
+    "avatarUnresolved": 426,
+    "baselineP0SecUid": 1543,
+    "baselineUnionSecUid": 1543,
+    "profileCovered": 1565,
+    "newProfiles": 22,
+    "profileUnresolved": 435,
+    "supplementProfiles": 22,
+    "supplementAvatars": 20,
+    "apiVerifiedProfiles": 22,
+    "sampleTotal": 100,
+    "sampleBaselineAvatar": 77,
+    "sampleAvatar": 80,
+    "sampleBaselineProfile": 76,
+    "sampleProfile": 79,
+    "first99BaselineAvatar": 76,
+    "first99Avatar": 79,
+    "first99BaselineProfile": 75,
+    "first99Profile": 78,
+    "legacy16DigitIds": ["1679892425107463", "1681176239915022"],
+    "shards": [
+      {
+        "file": "src/assets/education-avatars-00.jpg",
+        "count": 20,
+        "bytes": 28346
+      }
+    ],
+    "generatedAt": "2026-11-25T03:24:46.544037+00:00",
+    "note": "教育2000行按精确星图ID取并集（1998条19位、2条历史16位，均保持字符串）；只接受既有核验sec_uid或API unique_id身份核验后真实sec_uid。短ID与昵称不作为主页依据。原有映射不修改；冲突冻结。",
+    "sources": [
+      "agencyProfileUrls.json",
+      "industryTalentProfiles.json",
+      "https://www.iesdouyin.com/web/api/v2/user/info/"
+    ],
+    "basisCounts": {
+      "API status_code=0 and returned unique_id matches dataset mapping": 22
+    }
+  },
+  "profiles": {
+    "7052295497934962718": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAAHwmWpiFxWVqPvPs13BIrXJ-uQAPqpu2FUYfJRJZHDs0",
+      "displayId": "87200754101"
+    },
+    "7057696623928803341": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAAoe4XrW_2lzMJnywyYSvKqofae--BW8GtvMTLbu6cdkzeqNAj-va3sOJLOlyXCKX0",
+      "displayId": "makesparrow518"
+    },
+    "7063353320009646117": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAATRSXCL_beE5YIaQhpIA-KD3VXLYMw_MNNo8p7zAOr7s",
+      "displayId": "Sunnnyppp"
+    },
+    "7073787606344925214": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAAVOBNlAQpm2xsdTm65_XpTHx2JvbBid665qhDio8oJOJAjjDP_NLDm2rYOhFZkDVh",
+      "displayId": "milkkk6"
+    },
+    "7077865265198792741": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAAlwnA16fvnB-PJ-Z8OIajf2CdBugxnf6NWtCL8xveo9I",
+      "displayId": "chouqiongnvh73"
+    },
+    "7078115493856411655": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAAvBQ_x0JUG6eXIUcxClGw87RWIKtMh84aLk2P-QsQBLuI3LwdhJlGwaxKbJcUJA5x",
+      "displayId": "47289093967"
+    },
+    "7080974341856296960": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAAoA6q18gARwQFVu2TnqyMZ4VMdX1Sh4fchA4cz-hPDGQ",
+      "displayId": "Ss81103777"
+    },
+    "7092696453822283813": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAABRagcWJfw-FP_COPcH_pD72dY43Xw4-uDHnqXf7NauCvjipgx2_qnGqBZ_CSOI0B",
+      "displayId": "weijiaming123."
+    },
+    "7122504802562474015": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAACpK0w0TvGo3ahxFIA6-IhjO81OA0UCKI5xsEJ7TVoyicOD355836JSkp2mH3yEyp",
+      "displayId": "55222997022"
+    },
+    "7127182083000107045": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAAznOkKxM-FUK9YESf4lvFu55nsyiWzsKYZybbFShpZvY",
+      "displayId": "SS_188_J"
+    },
+    "7148640529956208654": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAA7TGWbbQJCmiUzao0z4W590_ChgurRvOP7Y-16ddVkdI",
+      "displayId": "shigelanma"
+    },
+    "7153155405776945188": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAAA1pOcrl3rw6yUF815Gnrv4ZCO0Sig6W72Ikl6lV5o9MDZDEufT7dAyKJnsCooiFl",
+      "displayId": "67075751220"
+    },
+    "7157963276175802398": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAA6o9Q18-s0mRY68Ja7uebrtYcK8MLucEPs1Q4hIxJqGo",
+      "displayId": "xiaoxutongxue999"
+    },
+    "7266326809745031224": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAAcBGY4RqDTLberZGiFTk-nG_L0hVwrFC7Bii_20YdBgBDGu-9JoA2L6jtkpdnpBpr",
+      "displayId": "samuelqzq"
+    },
+    "7266358190416085050": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAAlvNSB2ppeB4NjMxx5pqJrYVlMAoW2NMaFoxCEfSL3s4",
+      "displayId": "Zhen_0407"
+    },
+    "7275385422962753592": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAAyONv_QK0iXqQO1_hqgAxVFiw6nCjRDGNCYKcQ967ddXWLGZ5wVu6w_xJf4lgBC5z",
+      "displayId": "y517230783"
+    },
+    "7288745090187542583": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAApFg3w51iQUqPpgWpeRacfsqfQDTQrJZOxiampqnleiw",
+      "displayId": "wl952745"
+    },
+    "7304474385002266675": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAA0LP2yrweivUqjKOJRw-fsIOZjLUViyDwNr1Jjwne5iU",
+      "displayId": "30563497354"
+    },
+    "7435844557851328521": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAAp0PfbVUA7iYaBqwHdNZkIvPa0IPlxnVaQ0e48PHSfiP9jsHyIYkM9ESIxMKPBGJT",
+      "displayId": "37733154178"
+    },
+    "7640345357624279059": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAAf7W98FtnaE5jipZ0CUFwtIdJrWlulf1HzYtCiTW53hxzwcpyzHDzQHuONQZ6-kw2",
+      "displayId": "90698167693"
+    },
+    "7644053255651393545": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAAvF3c2uYZngmQxeGaH3jzH6db0r6jbIh6_6mfjZoLF1PeMovBGpoR1sYql9el57cK",
+      "displayId": "71473294980"
+    },
+    "7644937176160927785": {
+      "profileUrl": "https://www.douyin.com/user/MS4wLjABAAAAuv4FD0vXOWuy2veR7r8UneGf1ys4xXtWPedZNlQiBJaHo55ccl4y9EgEIt7q6tJ1",
+      "displayId": "Yoken999"
+    }
+  }
+}

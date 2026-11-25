@@ -123,6 +123,11 @@ def rewrite_node_sales_owners(data, policy):
 
 def write_profile_link_bootstrap(dist, source_dir):
     profiles = json.loads(read_source_file('p0ProfileUrls.json', source_dir))['profiles']
+    education = json.loads(read_source_file('educationTalentProfiles.json', source_dir))['profiles']
+    for star_id, verified in education.items():
+        match = re.fullmatch(r'https://www\.douyin\.com/user/(MS4w[^/?#]+)', verified.get('profileUrl') or '')
+        if match:
+            profiles[star_id] = match[1]
     snapshot_ids = set()
     for path in (dist / 'downloads').glob('*.data'):
         data = json.loads(path.read_text())
@@ -166,10 +171,10 @@ def main():
         counts[path.stem] = len(rows)
     assert len([name for name in counts if name.startswith('node-')]) == 4
     sprites = {}
-    for filename in ['agencyAvatarSprites.ts', 'p0AvatarSprites.ts', 'industryAvatarSprites.ts']:
+    for filename in ['agencyAvatarSprites.ts', 'p0AvatarSprites.ts', 'industryAvatarSprites.ts', 'educationAvatarSprites.ts']:
         text = read_source_file(filename, args.source_dir)
         imports = dict(re.findall(r"import (sprite\d+) from '../assets/([^']+)';", text))
-        for sid, symbol, position, width, height in re.findall(r"'(\d+)': \{ avatarUrl: (sprite\d+), avatarPosition: '([^']+)', spriteSize: \[(\d+), (\d+)\] \}", text):
+        for sid, symbol, position, width, height in re.findall(r"'(\d+)':\s*\{\s*avatarUrl:\s*(sprite\d+),\s*avatarPosition:\s*'([^']+)',\s*spriteSize:\s*\[(\d+),\s*(\d+)\],?\s*\}", text):
             if sid not in ids: continue
             matches = list((dist / 'static/image').glob(Path(imports[symbol]).stem + '.*.jpg'))
             assert len(matches) == 1, f'Unavailable sprite: {filename} {symbol}'
