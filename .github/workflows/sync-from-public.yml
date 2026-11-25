@@ -32,7 +32,7 @@ jobs:
           echo "6cf754c74c0edb3ffc7c03e28736a586ef4697ade95a447dbecd6e19130b4db9  release-performance-20261124.zip" | sha256sum --check
           rm -f "$tmpdir/release"/pages/static/js/async/page.*
           unzip -qo release-performance-20261124.zip -d "$tmpdir/release"
-          echo "6277d52eb14a2c57fcf174d3bf95938732048cfc01e61631c6eb6e6ecce2c3d3  release-education-20261124.zip" | sha256sum --check
+          echo "02516d8354cde65edd95a7ed6b9646fdd0ff12fa707fc72fc4e68a3ded755f37  release-education-20261124.zip" | sha256sum --check
           rm -f "$tmpdir/release"/pages/static/js/async/page.*
           unzip -qo release-education-20261124.zip -d "$tmpdir/release"
           git clone --depth=1 https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source"
@@ -66,7 +66,7 @@ jobs:
           echo "6cf754c74c0edb3ffc7c03e28736a586ef4697ade95a447dbecd6e19130b4db9  release-performance-20261124.zip" | sha256sum --check
           rm -f "$tmpdir/release"/pages/static/js/async/page.*
           unzip -qo release-performance-20261124.zip -d "$tmpdir/release"
-          echo "6277d52eb14a2c57fcf174d3bf95938732048cfc01e61631c6eb6e6ecce2c3d3  release-education-20261124.zip" | sha256sum --check
+          echo "02516d8354cde65edd95a7ed6b9646fdd0ff12fa707fc72fc4e68a3ded755f37  release-education-20261124.zip" | sha256sum --check
           rm -f "$tmpdir/release"/pages/static/js/async/page.*
           unzip -qo release-education-20261124.zip -d "$tmpdir/release"
           git clone --depth=1 --branch gh-pages https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source"
