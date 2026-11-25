@@ -35,8 +35,11 @@ jobs:
           echo "02516d8354cde65edd95a7ed6b9646fdd0ff12fa707fc72fc4e68a3ded755f37  release-education-20261124.zip" | sha256sum --check
           rm -f "$tmpdir/release"/pages/static/js/async/page.*
           unzip -qo release-education-20261124.zip -d "$tmpdir/release"
+          echo "ad154bd92ddef4a61c3147f68b07c481248fc2acac88281921bafc00503ef3bb  release-agency-resilience-20261125.zip" | sha256sum --check
+          rm -f "$tmpdir/release"/pages/static/js/async/page.*
+          unzip -qo release-agency-resilience-20261125.zip -d "$tmpdir/release"
           git clone --depth=1 https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source"
-          rsync -a --delete --exclude ".git" --exclude ".github/workflows/sync-from-public.yml" --exclude "release-content-20261124.zip" --exclude "release-ip-winter-20261124.zip" --exclude "release-performance-20261124.zip" --exclude "release-education-20261124.zip" "$tmpdir/source/" ./
+          rsync -a --delete --exclude ".git" --exclude ".github/workflows/sync-from-public.yml" --exclude "release-content-20261124.zip" --exclude "release-ip-winter-20261124.zip" --exclude "release-performance-20261124.zip" --exclude "release-education-20261124.zip" --exclude "release-agency-resilience-20261125.zip" "$tmpdir/source/" ./
           rsync -a "$tmpdir/release/source/" ./
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -69,6 +72,9 @@ jobs:
           echo "02516d8354cde65edd95a7ed6b9646fdd0ff12fa707fc72fc4e68a3ded755f37  release-education-20261124.zip" | sha256sum --check
           rm -f "$tmpdir/release"/pages/static/js/async/page.*
           unzip -qo release-education-20261124.zip -d "$tmpdir/release"
+          echo "ad154bd92ddef4a61c3147f68b07c481248fc2acac88281921bafc00503ef3bb  release-agency-resilience-20261125.zip" | sha256sum --check
+          rm -f "$tmpdir/release"/pages/static/js/async/page.*
+          unzip -qo release-agency-resilience-20261125.zip -d "$tmpdir/release"
           git clone --depth=1 --branch gh-pages https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source"
           git clone --depth=1 https://github.com/shiyuecheng34-hue/talent-supply-hub-public.git "$tmpdir/source-main"
           rsync -a "$tmpdir/release/source/" "$tmpdir/source-main/"
