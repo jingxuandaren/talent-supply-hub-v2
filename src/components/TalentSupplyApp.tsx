@@ -25,24 +25,16 @@ import {
   Star,
   UsersRound,
 } from 'lucide-react';
-import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { FeaturedTalentSidebarEntry } from './AgencyBookletRail';
 import { BookletModule } from './BookletModule';
 import { FeaturedTalentIntro } from './FeaturedTalentIntro';
 import { IpCampaignModule } from './IpCampaignModule';
+import { LazyAgencyModules, preloadAgencyModules } from './LazyAgencyModules';
 import { SharedAvatarVisual } from './P0Avatar';
 import { TeamModule } from './TeamModule';
 
 import { ModuleBanner, type ModuleKey } from './ModuleBanner';
-
-const AgencyModule = lazy(() =>
-  import('./AgencyModule').then(module => ({ default: module.AgencyModule })),
-);
-const P0AuthorsModule = lazy(() =>
-  import('./P0AuthorsModule').then(module => ({
-    default: module.P0AuthorsModule,
-  })),
-);
 
 type P0ProfileDoc = { profiles: Record<string, string> };
 
@@ -608,6 +600,11 @@ function App() {
   const [industry, setIndustry] = useState(INDUSTRIES[0].id);
   const previousNodeFirst = useRef<string | null>(null);
   const [node, setNode] = useState(NODES[3].id);
+
+  useEffect(() => {
+    preloadAgencyModules();
+  }, []);
+
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -698,16 +695,7 @@ function App() {
           </div>
         )}
         {module === 'team' && <TeamModule />}
-        {module === 'ai' && (
-          <Suspense
-            fallback={
-              <div className="state-panel">正在加载代理商达人资料…</div>
-            }
-          >
-            <AgencyModule />
-            <P0AuthorsModule />
-          </Suspense>
-        )}
+        {module === 'ai' && <LazyAgencyModules />}
         <footer>
           <span>精选达人供给库 v1.0 · Powered by 飞书数据</span>
           <span>© 2026 Talent Supply</span>

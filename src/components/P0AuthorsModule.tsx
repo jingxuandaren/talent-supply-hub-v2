@@ -1,4 +1,5 @@
 import { agencyPagination } from '@/lib/agencyPagination';
+import { retryDynamicImport } from '@/lib/retryDynamicImport';
 import { downloadRowsTable } from '@/lib/tableCsv';
 import { Download, LoaderCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -182,9 +183,9 @@ export function P0AuthorsModule() {
   useEffect(() => {
     let cancelled = false;
     Promise.all([
-      import('@/data/p0Authors.json'),
-      import('@/data/p0ProfileUrls.json'),
-      import('@/data/p0ShortIds.json'),
+      retryDynamicImport(() => import('@/data/p0Authors.json')),
+      retryDynamicImport(() => import('@/data/p0ProfileUrls.json')),
+      retryDynamicImport(() => import('@/data/p0ShortIds.json')),
     ])
       .then(([dataModule, profileModule, shortModule]) => {
         if (cancelled) return;
@@ -265,6 +266,9 @@ export function P0AuthorsModule() {
     return (
       <section className="content-section p0-section">
         <p className="p-6">P0 作者数据加载失败，请刷新页面重试。</p>
+        <button type="button" onClick={() => window.location.reload()}>
+          重新加载
+        </button>
       </section>
     );
   }
